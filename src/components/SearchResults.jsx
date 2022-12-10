@@ -6,28 +6,26 @@ import {
   ListItemText,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setCitySearch } from "../context/searchSlice";
-import { useGetCityBySearchQuery } from "../context/weatherApi";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCities, selectSearchData } from "../context/searchSlice";
+import { fetchWeather } from "../context/weatherSlice";
 
 const SearchResults = ({ input, show }) => {
   const dispatch = useDispatch();
-  const [selectedCity, setSelectedCity] = useState();
-  const {
-    data: searchResult,
-    error,
-    isError,
-    isLoading,
-  } = useGetCityBySearchQuery(input);
+  const [selectedCity, setSelectedCity] = useState("istanbul");
+  const { cities, loading, status, err } = useSelector(selectSearchData);
 
   useEffect(() => {
-    if (selectedCity)
-      dispatch(setCitySearch(selectedCity.split(" ").join("_")));
+    console.log(selectedCity);
+    if (selectedCity) dispatch(fetchWeather(selectedCity));
   }, [dispatch, selectedCity]);
 
-  let content;
+  useEffect(() => {
+    if (input) dispatch(fetchCities(input));
+  }, [dispatch, input]);
 
-  if (isLoading)
+  let content;
+  if (loading)
     content = (
       <div
         style={{
@@ -42,8 +40,29 @@ const SearchResults = ({ input, show }) => {
         <CircularProgress disableShrink />
       </div>
     );
-  else if (isError) content = <p>{error.toString()}</p>;
-  else if (searchResult)
+  else if (err) content = <p>{status}</p>;
+  else if (!cities)
+    content = (
+      <Collapse in={show} timeout="auto" unmountOnExit>
+        <List
+          sx={{
+            position: "fixed",
+            height: "250px",
+            width: "250px",
+            color: "#000",
+            backgroundColor: "#F7F6F9",
+            borderRadius: "0px 0px 15px 15px",
+            overflowY: "scroll",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Not Found City or Region
+        </List>
+      </Collapse>
+    );
+  else
     content = (
       <Collapse in={show} timeout="auto" unmountOnExit>
         <List
@@ -57,8 +76,8 @@ const SearchResults = ({ input, show }) => {
             overflowY: "scroll",
           }}
         >
-          {searchResult &&
-            searchResult.map((city) => (
+          {cities &&
+            cities.map((city) => (
               <ListItem
                 sx={{
                   ":hover": {
@@ -68,7 +87,7 @@ const SearchResults = ({ input, show }) => {
                   },
                 }}
                 key={city.id}
-                onClick={() => setSelectedCity(city.name)}
+                onClick={() => setSelectedCity(city.url)}
               >
                 <ListItemText>{city.name}</ListItemText>
               </ListItem>

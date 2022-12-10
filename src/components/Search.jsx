@@ -28,7 +28,7 @@ const Search = () => {
           onBlur={() =>
             setTimeout(() => {
               setIsShow(false);
-            }, 100)
+            }, 300)
           }
           InputProps={{
             endAdornment: (

@@ -1,26 +1,23 @@
 import { Skeleton } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectWeatherData } from "../context/weatherSlice";
 import getDate from "../helpers/getDate";
 
-const Current = ({ current }) => {
+const Current = () => {
+  const { current, loading, status, err } = useSelector(selectWeatherData);
+
   let content;
-  if (current)
+  if (loading) content = <Skeleton>Current</Skeleton>;
+  else if (err) content = <>{status}</>;
+  else if (current)
     content = (
-      <div>
-        <img
-          src={current.condition.icon}
-          alt={current.condition.text}
-          width="150px"          
-        />
-        <h1 style={{ fontSize: "64px", marginLeft: "1em" }}>
-          {current.temp_c}&deg;
-        </h1>
-        <h3>{getDate(current.last_updated)}</h3>
-        <h4>{current.condition.text}</h4>
-        <h4>{current.condition}</h4>
-      </div>
+      <>
+        <h1>{current.temp_c}</h1>
+        <h1>{current.condition.text}</h1>
+        <img src={current.condition.icon}></img>
+      </>
     );
-  else if (!current) content = <Skeleton />;
   return <>{content}</>;
 };
 
