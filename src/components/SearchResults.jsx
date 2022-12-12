@@ -13,10 +13,9 @@ import { fetchWeather } from "../context/weatherSlice";
 const SearchResults = ({ input, show }) => {
   const dispatch = useDispatch();
   const [selectedCity, setSelectedCity] = useState("istanbul");
-  const { cities, loading, status, err } = useSelector(selectSearchData);
+  const { cities, loading, status, error } = useSelector(selectSearchData);
 
-  useEffect(() => {
-    console.log(selectedCity);
+  useEffect(() => {    
     if (selectedCity) dispatch(fetchWeather(selectedCity));
   }, [dispatch, selectedCity]);
 
@@ -40,7 +39,7 @@ const SearchResults = ({ input, show }) => {
         <CircularProgress disableShrink />
       </div>
     );
-  else if (err) content = <p>{status}</p>;
+  else if (error) content = <p>{status}</p>;
   else if (!cities)
     content = (
       <Collapse in={show} timeout="auto" unmountOnExit>
