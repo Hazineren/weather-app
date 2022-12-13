@@ -9,9 +9,9 @@ const initialState = {
     error: false,
   },
 };
-
+console.log(process.env.REACT_APP_BASE_URL)
 export const fetchCities = createAsyncThunk("/search", async (city) => {
-  const response = await axios.get(`${process.env.BASE_URL}${process.env.SEARCH_URL}${city}`);
+  const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_SEARCH_URL}${city}`);
   return response?.data;
 });
 

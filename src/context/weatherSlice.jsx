@@ -13,7 +13,7 @@ const initialState = {
 };
 
 export const fetchWeather = createAsyncThunk("/weather", async (city) => {
-  const response = await axios.get(`${process.env.BASE_URL}${process.env.WEATHER_URL}${city}`);
+  const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_WEATHER_URL}${city}`);
   return response?.data;
 });
 
