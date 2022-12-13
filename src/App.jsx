@@ -16,7 +16,7 @@ const App = () => {
           height: "100vh",
           width: "100%",
           backgroundColor: "#D6D7DA",
-          padding: "4% 8%",
+          padding: "3em 9em",
         }}
       >
         <Grid

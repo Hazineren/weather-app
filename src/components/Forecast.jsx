@@ -3,13 +3,14 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectWeatherData } from "../context/weatherSlice";
 import getDate from "../helpers/getDate";
-//import icons from "../helpers/images";
+import icons from "../helpers/images";
 
 const Forecast = () => {
   const { forecast, loading, status, error } = useSelector(selectWeatherData);
   let content;
 
-  if (loading) content = <Skeleton>Forecast</Skeleton>;
+  if (loading)
+    content = <Skeleton variant="rounded" animation="wave" height={200} />;
   else if (error) content = <>{status}</>;
   else if (forecast)
     content = (
@@ -33,7 +34,11 @@ const Forecast = () => {
             }}
           >
             <h3>{getDate(item.date)}</h3>
-            <img src={item.day.condition.icon} alt={item.day.condition.text} width="70px"></img>            
+            <img
+              src={icons[`1${item.day.condition.text}`]}
+              alt={item.day.condition.text}
+              width="70px"
+            ></img>
             <span
               style={{
                 display: "flex",

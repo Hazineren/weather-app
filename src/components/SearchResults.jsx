@@ -31,6 +31,7 @@ const SearchResults = ({ input, show }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          position: "fixed",
           width: "250px",
           height: "250px",
           backgroundColor: "#F7F6F9",

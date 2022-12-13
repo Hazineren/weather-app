@@ -7,7 +7,10 @@ const Location = () => {
   const { location, loading, status, error } = useSelector(selectWeatherData);
 
   let content;
-  if (loading) content = <Skeleton>Location</Skeleton>;
+  if (loading)
+    content = (
+      <Skeleton sx={{ borderRadius: "15px" }} width={300} height={200} />
+    );
   else if (error) content = <>{status}</>;
   else if (location)
     content = (
