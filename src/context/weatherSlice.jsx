@@ -11,11 +11,9 @@ const initialState = {
     error: false,
   },
 };
-const BASE_URL = "http://localhost:8888";
-const URL_WEATHER = "/.netlify/functions/weather?q=";
 
 export const fetchWeather = createAsyncThunk("/weather", async (city) => {
-  const response = await axios.get(`${BASE_URL}${URL_WEATHER}${city}`);
+  const response = await axios.get(`${process.env.BASE_URL}${process.env.WEATHER_URL}${city}`);
   return response?.data;
 });
 

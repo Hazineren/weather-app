@@ -9,11 +9,9 @@ const initialState = {
     error: false,
   },
 };
-const BASE_URL = "http://localhost:8888";
-const URL_SEARCH = "/.netlify/functions/search?q=";
 
 export const fetchCities = createAsyncThunk("/search", async (city) => {
-  const response = await axios.get(`${BASE_URL}${URL_SEARCH}${city}`);
+  const response = await axios.get(`${process.env.BASE_URL}${process.env.SEARCH_URL}${city}`);
   return response?.data;
 });
 
