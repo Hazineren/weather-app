@@ -1,4 +1,4 @@
-import { Skeleton } from "@mui/material";
+import { Grid, Skeleton, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectWeatherData } from "../context/weatherSlice";
@@ -14,26 +14,10 @@ const Forecast = () => {
   else if (error) content = <>{status}</>;
   else if (forecast)
     content = (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          textAlign: "center",
-          flexWrap: "wrap",
-          alignContent: "flex-start",
-        }}
-      >
+      <Grid sx={forecastStyles.flex}>
         {forecast.map((item, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: "#fff",
-              margin: "0 0.5em",
-              padding: "0.5em 2em",
-              borderRadius: "15px",
-            }}
-          >
-            <h3>{getDate(item.date)}</h3>
+          <Grid key={index} sx={forecastStyles.itemGrid}>
+            <Typography variant="h5">{getDate(item.date)}</Typography>
             <img
               src={icons[`1${item.day.condition.text}`]}
               alt={item.day.condition.text}
@@ -51,11 +35,31 @@ const Forecast = () => {
                 {Math.round(item.day.mintemp_c)}&deg;
               </p>
             </span>
-          </div>
+          </Grid>
         ))}
-      </div>
+      </Grid>
     );
   return <>{content}</>;
 };
 
 export default Forecast;
+
+const forecastStyles = {
+  flex: {
+    display: "flex",
+    flexDirection: "row",
+    overflow: "auto",
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: { md: "space-between" },
+    gap: "20px",    
+    width: {xl: "70%"},
+    margin: {xs: "1em",xl: "0 auto"},
+  },
+  itemGrid: {
+    backgroundColor: "#fff",
+    borderRadius: "15px",
+    minWidth: "150px",
+    padding: "1em"
+  },
+};

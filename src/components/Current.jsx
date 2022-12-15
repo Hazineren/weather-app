@@ -1,4 +1,4 @@
-import { Skeleton } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectWeatherData } from "../context/weatherSlice";
@@ -34,12 +34,14 @@ const Current = () => {
         {loading ? (
           <Skeleton variant="text" width={200} />
         ) : (
-          <h1>{Math.round(current.temp_c)}&deg;C</h1>
+          <Typography variant="h2">
+            {Math.round(current.temp_c)}&deg;C
+          </Typography>
         )}
         {loading ? (
           <Skeleton variant="text" />
         ) : (
-          <h2>{current.condition.text}</h2>
+          <Typography variant="h4">{current.condition.text}</Typography>
         )}
         {loading ? (
           <Skeleton variant="text" />

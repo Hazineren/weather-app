@@ -1,5 +1,10 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import {
+  createTheme,
+  Grid,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@mui/material";
 import Current from "./components/Current";
 import Forecast from "./components/Forecast";
 import Location from "./components/Location";
@@ -7,58 +12,63 @@ import Search from "./components/Search";
 import TodayDetail from "./components/TodayDetail";
 
 const App = () => {
+  let theme = createTheme({
+    typography: {
+      htmlFontSize: 16,
+    },
+  });
+  theme = responsiveFontSizes(theme);
+
   return (
-    <>
-      <Grid
-        container
-        component="main"
-        sx={{
-          height: "100vh",
-          width: "100%",
-          backgroundColor: "#D6D7DA",
-          padding: "3em 9em",
-        }}
-      >
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={3}
-          l={3}
-          sx={{
-            backgroundColor: "#FFF",
-            padding: "4em 2em 4em 4em",
-            borderRadius: {
-              xs: "50px 50px 0 0",
-              sm: "50px 50px 0 0",
-              md: "50px 0 0 50px",
-            },
-          }}
-        >
+    <ThemeProvider theme={theme}>
+      <Grid container component="main" sx={appStyles.main}>
+        <Grid item xs={12} sm={12} md={4} lg={3} sx={appStyles.currentGrid}>
           <Search />
           <Current />
           <Location />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={9}
-          l={9}
-          sx={{
-            display: "flex",
-            backgroundColor: "#F7F6F9",
-            flexDirection: "column",
-            padding: "4em",
-            borderRadius: "0 50px 50px 0",
-          }}
-        >
+        <Grid item xs={12} sm={12} md={8} lg={9} sx={appStyles.forecastGrid}>
           <Forecast />
           <TodayDetail />
         </Grid>
       </Grid>
-    </>
+    </ThemeProvider>
   );
 };
 
 export default App;
+
+const appStyles = {
+  main: {
+    height: {md:"100vh"},
+    backgroundColor: "#D6D7DA",
+    padding: {
+      xs: "4em 0",
+      sm: "4em",
+      md: "2em 4em",
+    },
+  },
+  currentGrid: {
+    backgroundColor: "#FFF",
+    padding: {
+      xs: "2em",
+      sm: "2em 4em",
+      md: "2em",
+      lg: "4em",
+    },
+    borderRadius: {
+      xs: "50px 50px 0 0",
+      md: "50px 0 0 50px",
+    },
+  },
+  forecastGrid: {
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "#F7F6F9",
+    padding: "2rem",
+    borderRadius: {
+      xs: "0 0 50px 50px",
+      md: "0 50px 50px 0",
+    },
+  },
+};
