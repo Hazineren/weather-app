@@ -1,33 +1,46 @@
 import React from "react";
-import {
-  createTheme,
-  Grid,
-  responsiveFontSizes,
-  ThemeProvider,
-} from "@mui/material";
+
 import Current from "./components/Current";
 import Forecast from "./components/Forecast";
 import Location from "./components/Location";
 import Search from "./components/Search";
 import TodayDetail from "./components/TodayDetail";
+import theme from "./theme/Themes";
+
+import { CssBaseline, Grid, ThemeProvider } from "@mui/material";
 
 const App = () => {
-  let theme = createTheme({
-    typography: {
-      htmlFontSize: 16,
-    },
-  });
-  theme = responsiveFontSizes(theme);
-
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={appStyles.main}>
-        <Grid item xs={12} sm={12} md={4} lg={3} sx={appStyles.currentGrid}>
+      <CssBaseline />
+      <Grid
+        container
+        component="main"
+        bgcolor="primary.main"
+        sx={appStyles.container}
+      >
+        <Grid
+          item
+          xs={12}
+          md={4}
+          lg={3}
+          p={10}
+          bgcolor="common.white"
+          sx={appStyles.gridCurrent}
+        >
           <Search />
           <Current />
           <Location />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} lg={9} sx={appStyles.forecastGrid}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          lg={9}
+          p={5}
+          bgcolor="secondary.main"
+          sx={appStyles.gridForecast}
+        >
           <Forecast />
           <TodayDetail />
         </Grid>
@@ -39,33 +52,23 @@ const App = () => {
 export default App;
 
 const appStyles = {
-  main: {
-    height: {md:"100vh"},
-    backgroundColor: "#D6D7DA",
+  container: {
     padding: {
-      xs: "4em 0",
-      sm: "4em",
-      md: "2em 4em",
+      xs: "4rem 0",
+      sm: "3rem",
+      lg: "3rem 6rem",
     },
   },
-  currentGrid: {
-    backgroundColor: "#FFF",
-    padding: {
-      xs: "2em",
-      sm: "2em 4em",
-      md: "2em",
-      lg: "4em",
-    },
+  gridCurrent: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
     borderRadius: {
       xs: "50px 50px 0 0",
       md: "50px 0 0 50px",
     },
   },
-  forecastGrid: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "#F7F6F9",
-    padding: "2rem",
+  gridForecast: {
     borderRadius: {
       xs: "0 0 50px 50px",
       md: "0 50px 50px 0",

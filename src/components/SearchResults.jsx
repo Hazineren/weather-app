@@ -1,21 +1,23 @@
-import {
-  CircularProgress,
-  Collapse,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCities, selectSearchData } from "../context/searchSlice";
 import { fetchWeather } from "../context/weatherSlice";
+
+import {
+  CircularProgress,
+  Collapse,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 
 const SearchResults = ({ input, show }) => {
   const dispatch = useDispatch();
   const [selectedCity, setSelectedCity] = useState("istanbul");
   const { cities, loading, status, error } = useSelector(selectSearchData);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (selectedCity) dispatch(fetchWeather(selectedCity));
   }, [dispatch, selectedCity]);
 
@@ -26,38 +28,15 @@ const SearchResults = ({ input, show }) => {
   let content;
   if (loading)
     content = (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "fixed",
-          width: "250px",
-          height: "250px",
-          backgroundColor: "#F7F6F9",
-        }}
-      >
+      <Grid sx={searchResultsStyles.container}>
         <CircularProgress disableShrink />
-      </div>
+      </Grid>
     );
   else if (error) content = <p>{status}</p>;
   else if (!cities)
     content = (
       <Collapse in={show} timeout="auto" unmountOnExit>
-        <List
-          sx={{
-            position: "fixed",
-            height: "250px",
-            width: "250px",
-            color: "#000",
-            backgroundColor: "#F7F6F9",
-            borderRadius: "0px 0px 15px 15px",
-            overflowY: "scroll",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <List sx={searchResultsStyles.noneCitieslist}>
           Not Found City or Region
         </List>
       </Collapse>
@@ -65,27 +44,11 @@ const SearchResults = ({ input, show }) => {
   else
     content = (
       <Collapse in={show} timeout="auto" unmountOnExit>
-        <List
-          sx={{
-            position: "fixed",
-            height: "250px",
-            width: "250px",
-            color: "#000",
-            backgroundColor: "#F7F6F9",
-            borderRadius: "0px 0px 15px 15px",
-            overflowY: "scroll",
-          }}
-        >
+        <List sx={searchResultsStyles.citiesList}>
           {cities &&
             cities.map((city) => (
               <ListItem
-                sx={{
-                  ":hover": {
-                    backgroundColor: "#1976D2",
-                    color: "#fff",
-                    transition: "all 300ms ease",
-                  },
-                }}
+                sx={searchResultsStyles.listItem}
                 key={city.id}
                 onClick={() => setSelectedCity(city.url)}
               >
@@ -97,6 +60,46 @@ const SearchResults = ({ input, show }) => {
     );
 
   return <>{content}</>;
+};
+
+const searchResultsStyles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "fixed",
+    width: "250px",
+    height: "250px",
+    backgroundColor: "#F7F6F9",
+  },
+  citiesList: {
+    position: "fixed",
+    height: "250px",
+    width: "250px",
+    color: "#000",
+    backgroundColor: "#F7F6F9",
+    borderRadius: "0px 0px 15px 15px",
+    overflowY: "scroll",
+  },
+  listItem: {
+    ":hover": {
+      backgroundColor: "#1976D2",
+      color: "#fff",
+      transition: "all 300ms ease",
+    },
+  },
+  noneCitieslist: {
+    position: "fixed",
+    height: "250px",
+    width: "250px",
+    color: "#000",
+    backgroundColor: "#F7F6F9",
+    borderRadius: "0px 0px 15px 15px",
+    overflowY: "scroll",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 };
 
 export default SearchResults;

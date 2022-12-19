@@ -33,37 +33,3 @@ code {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #1976d2;
 }
-
-.region {
-  position: relative;
-  background: url("https://picsum.photos/id/13/300");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  padding: 1.2em;
-  border-radius: 15px;
-  color: #fff;
-}
-.region::before {
-  content: "";
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  border-radius: 15px;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.region > * {
-  position: relative;
-  font-size: 1em;
-  text-align: right;
-  line-height: 1.5;
-  color: #ffffff;
-}
-
-p {
-  font-size: 1.2em;
-  font-weight: 500;
-}

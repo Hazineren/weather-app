@@ -1,9 +1,16 @@
 import React from "react";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { selectWeatherData } from "../context/weatherSlice";
 import { useSelector } from "react-redux";
-import { Grid, Skeleton, Typography } from "@mui/material";
+
+import {
+  Grid,
+  Skeleton,
+  Typography,
+  Card,
+  CardContent,
+  CardHeader,
+} from "@mui/material";
 
 const TodayDetail = () => {
   const { forecast, current, loading, status, error } =
@@ -17,6 +24,7 @@ const TodayDetail = () => {
     5: "Very Unhealthy",
     6: "Hazardous",
   };
+
   let content;
   if (loading)
     content = (
@@ -30,119 +38,123 @@ const TodayDetail = () => {
   else if (error) content = <>{status}</>;
   else if (current) {
     content = (
-      <Grid>
+      <Grid container sx={todayDetailStyles.container}>
         <Typography variant="h4">Today's Highlights</Typography>
-        <Grid sx={todayDetailStyles.container}>
-          <Grid item sx={todayDetailStyles.itemGrid}>
-            <Typography variant="h5">Wind Status</Typography>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <LocationOnOutlinedIcon
-                fontSize="inherit"
-                color="primary"
-                sx={{
-                  fontSize: "50px",
-                  transform: `rotate(${current.wind_degree + 180}deg)`,
-                }}
-              />
-              <p>{current.wind_dir}</p>
-            </div>
-            <p>{current.wind_kph}km/h</p>
-          </Grid>
-          <Grid item sx={todayDetailStyles.itemGrid}>
-            <Typography variant="h5">Air Quality</Typography>
-            <p>{air_index[current.air_quality["us-epa-index"]]}</p>
-            {current.air_quality["us-epa-index"] > 2 ? (
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/3741/3741088.png"
-                alt="air_quality_bad"
-                style={{ filter: "grayscale(60%)" }}
-                width={"50px"}
-              />
-            ) : (
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/3741/3741046.png"
-                alt="air_quality_good"
-                width={"50px"}
-              />
-            )}
-          </Grid>
-          <Grid item sx={todayDetailStyles.itemGrid}>
-            <Typography variant="h5">Sunrise & Sunset</Typography>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                fontSize: "16px",
-              }}
-            >
-              <p>{forecast[0].astro.sunrise}</p>
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/8098/8098355.png"
-                alt="sunset"
-                height={"50px"}
-                width={"50px"}
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                fontSize: "16px",
-              }}
-            >
-              <p>{forecast[0].astro.sunset}</p>
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/8098/8098358.png"
-                alt="sunrise"
-                width={"50px"}
-                height={"50px"}
-              />
-            </div>
-          </Grid>
-          <Grid item sx={todayDetailStyles.itemGrid}>
-            <Typography variant="h5">Visibility</Typography>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/5261/5261895.png"
-                alt="visibility"
-                width={50}
-                style={{ transform: `rotate(270deg)` }}
-              />
-              <p>{current.vis_km}km</p>
-            </div>
-          </Grid>
-          <Grid item sx={todayDetailStyles.itemGrid}>
-            <Typography variant="h5">Humidity</Typography>
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3262/3262970.png"
-              alt="humidity"
-              width={"50px"}
-            />
-            <p>{current.humidity}%</p>
-          </Grid>
-          <Grid item sx={todayDetailStyles.itemGrid}>
-            <Typography variant="h5">Precipitation</Typography>
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3262/3262912.png"
-              alt="precipitation"
-              width={"50px"}
-            />
-            <p>{current.precip_mm}mm</p>
-          </Grid>
+        <Grid sx={todayDetailStyles.gridCards}>
+          <Card sx={todayDetailStyles.card}>
+            <CardHeader title="Wind Status" />
+            <CardContent>
+              <Grid item sx={todayDetailStyles.gridFlexCenter}>
+                <LocationOnOutlinedIcon
+                  fontSize="inherit"
+                  color="info"
+                  sx={{
+                    fontSize: "50px",
+                    transform: `rotate(${current.wind_degree + 180}deg)`,
+                  }}
+                />
+                <Typography gutterBottom variant="body1">
+                  {current.wind_dir}
+                </Typography>
+              </Grid>
+              <Typography gutterBottom variant="body1">
+                {current.wind_kph}km/h
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card sx={todayDetailStyles.card}>
+            <CardHeader title="Air Quality" />
+            <CardContent>
+              <Typography gutterBottom variant="body1">
+                {air_index[current.air_quality["us-epa-index"]]}
+              </Typography>
+              {current.air_quality["us-epa-index"] > 2 ? (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3741/3741088.png"
+                  alt="air_quality_bad"
+                  style={{ filter: "grayscale(60%)" }}
+                  width={"50px"}
+                />
+              ) : (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3741/3741046.png"
+                  alt="air_quality_good"
+                  width={"50px"}
+                />
+              )}
+            </CardContent>
+          </Card>
+          <Card sx={todayDetailStyles.card}>
+            <CardHeader title="Sunrise & Sunset" />
+            <CardContent>
+              <Grid item sx={todayDetailStyles.gridFlexCenter}>
+                <Typography gutterBottom variant="body1">
+                  {forecast[0].astro.sunrise}
+                </Typography>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/8098/8098355.png"
+                  alt="sunset"
+                  height={"50px"}
+                  width={"50px"}
+                />
+              </Grid>
+              <Grid sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography>{forecast[0].astro.sunset}</Typography>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/8098/8098358.png"
+                  alt="sunrise"
+                  width={"50px"}
+                  height={"50px"}
+                />
+              </Grid>
+            </CardContent>
+          </Card>
+          <Card sx={todayDetailStyles.card}>
+            <CardHeader title="Visibility" />
+            <CardContent>
+              <Grid item sx={todayDetailStyles.gridFlexCenter}>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/5261/5261895.png"
+                  alt="visibility"
+                  width={50}
+                  style={{ transform: `rotate(270deg)` }}
+                />
+                <Typography gutterBottom variant="body1">
+                  {current.vis_km}km
+                </Typography>
+              </Grid>
+            </CardContent>
+          </Card>
+          <Card sx={todayDetailStyles.card}>
+            <CardHeader title="Humidity" />
+            <CardContent>
+              <Grid item sx={todayDetailStyles.gridFlexCenter}>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3262/3262970.png"
+                  alt="humidity"
+                  width={"50px"}
+                />
+                <Typography gutterBottom variant="body1">
+                  {current.humidity}%
+                </Typography>
+              </Grid>
+            </CardContent>
+          </Card>
+          <Card sx={todayDetailStyles.card}>
+            <CardHeader title="Precipitation" />
+            <CardContent>
+              <Grid item sx={todayDetailStyles.gridFlexCenter}>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3262/3262912.png"
+                  alt="precipitation"
+                  width={"50px"}
+                />
+                <Typography gutterBottom variant="body1">
+                  {current.precip_mm}mm
+                </Typography>
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     );
@@ -156,21 +168,29 @@ const todayDetailStyles = {
   container: {
     display: "flex",
     overflow: "auto",
-    textAlign: "center",
-    flexWrap: { lg: "wrap" },
-    padding: "1em 2em",
-    gap: {
-      xs: "20px",
-      lg: "20px 40px",
-    },
-    maxWidth: { lg: "920px" },
-    margin: { lg: "0 auto" },
-    justifyContent: { lg: "center" },
+    flexDirection: "column",
   },
-  itemGrid: {
-    backgroundColor: "#fff",
+  gridCards: {
+    display: "flex",
+    flexWrap: { lg: "wrap" },
+    justifyContent: "center",
+    gap: "0 1rem",
+    maxWidth: "1100px",
+  },
+  card: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "column",
     borderRadius: "15px",
-    minWidth: "240px",
-    padding: "2em",
+    minWidth: { md: "300px" },
+    minHeight: "240px",
+    margin: "0.5rem 0",
+    padding: "1.5rem",
+  },
+  gridFlexCenter: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
 };
